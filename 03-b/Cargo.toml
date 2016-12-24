@@ -1,0 +1,6 @@
+[package]
+name = "03-b"
+version = "0.1.0"
+authors = ["L E Turpin <TurpinLeon@gmail.com>"]
+
+[dependencies]
