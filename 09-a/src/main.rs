@@ -28,6 +28,7 @@ fn main() {
     ").unwrap();
 
     let mut unparsed_text: String = input;
+    let mut decompressed_text: String = "".to_string();
 
     loop {
         let unparsed_text_clone = unparsed_text.clone();
@@ -40,14 +41,29 @@ fn main() {
 
         let plain_text = &text_captures[1];
         let marker_text = &text_captures[2];
-        unparsed_text = text_captures[3].to_string();
+        let post_marker_text = &text_captures[3];
 
         let marker_captures = marker_deconstructer.captures(marker_text).unwrap();
 
-        println!(":{}\n:{}\n:{:?}\n----", plain_text, marker_text, marker_captures);
+        let repeat_length = marker_captures[1].parse::<usize>().unwrap();
+        let repeat_times = marker_captures[2].parse::<u32>().unwrap();
+
+        let mut chars = post_marker_text.chars();
+
+        let repeat_text: String = chars.by_ref().take(repeat_length).collect();
+        unparsed_text = chars.collect();
+
+        decompressed_text.push_str(plain_text);
+
+        for _ in 0..repeat_times {
+            decompressed_text.push_str(&repeat_text);
+        }
+
+        // println!(":{}\n:{}\n:{}x{}\n:{}\n----", plain_text, marker_text, repeat_length, repeat_times, repeat_text);
     }
 
-    println!(":{}", unparsed_text);
+    println!("{}", decompressed_text);
+    println!("{}", decompressed_text.len());
 }
 
 fn file_to_string<P: AsRef<Path>>(file_path: P) -> std::io::Result<String>{
