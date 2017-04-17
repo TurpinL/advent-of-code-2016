@@ -36,8 +36,6 @@ fn main() {
 }
 
 fn calc_decompressed_len(compressed_text: &str) -> usize {
-    
-
     let mut decompressed_length = 0;
     let mut unparsed_text = compressed_text.to_string();
 
